@@ -1,0 +1,21 @@
+#:kivy 1.9.1
+
+<FlappyBirdGame>:
+    bird: flappy_bird
+
+    canvas:
+        Rectangle:
+            pos: 0, 0
+            size: self.width, 20
+
+    FlappyBird:
+        id: flappy_bird
+        center: self.parent.center
+
+
+<FlappyBird>:
+    size: 50, 50
+    canvas:
+        Ellipse:
+            pos: self.pos
+            size: self.size
