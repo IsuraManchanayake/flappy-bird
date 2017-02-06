@@ -2,6 +2,8 @@
 
 <FlappyBirdGame>:
     bird: flappy_bird
+    obstacle1: obstacle1
+    obstacle2: obstacle2
 
     canvas:
         Rectangle:
@@ -12,6 +14,21 @@
         id: flappy_bird
         center: self.parent.center
 
+    Obstacle:
+        id: obstacle1
+        pos: self.parent.width, 0
+
+    Obstacle:
+        id: obstacle2
+        pos: self.parent.width / 2 - obstacle2.width / 2, 0
+
+    Label:
+        font_size: 400
+        opacity: 0.05
+        center_x: root.width / 2
+        center_y: root.height / 2
+        text: str(root.bird.score)
+
 
 <FlappyBird>:
     size: 50, 50
@@ -19,3 +36,15 @@
         Ellipse:
             pos: self.pos
             size: self.size
+
+<Obstacle>:
+    size: 100, 600
+    canvas:
+        Rectangle:
+            pos: self.x, root.top_hol
+            size: 100, 600 - root.top_hol
+
+        Rectangle:
+            pos: self.x, 20
+            size: root.wide, root.bot_hol - 20
+
