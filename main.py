@@ -32,6 +32,9 @@ class Obstacle(Widget):
     top_hol = NumericProperty(0)
     wide = NumericProperty(100)
     v = NumericProperty(6)
+    acceleration = 0.001
+    # 0 - none, 1 - bird inside
+    state = 0
 
     def __init__(self, **kwargs):
         super(Obstacle, self).__init__(**kwargs)
@@ -39,19 +42,28 @@ class Obstacle(Widget):
 
     def move(self):
         self.pos = Vector(-self.v, 0) + self.pos
-        # self.v += 1
+        self.v += Obstacle.acceleration
         if self.right < 0:
             self.pos = Vector(w_width, 0)
             self.make_hole()
 
     def follow(self, obstacle, offset=100):
+        self.v += Obstacle.acceleration
         self.pos = Vector(offset, 0) + obstacle.pos
 
     def check_collide(self, bird):
         if bird.right > self.x and \
                 bird.x < self.x + self.width and \
                 (bird.top < self.top_hol and -bird.height + bird.top > self.bot_hol):
-            bird.score += 1
+            if self.state == 0:
+                bird.score += 1
+            self.state = 1
+        else:
+            self.state = 0
+        if bird.right > self.x and \
+                bird.x < self.x + self.width and \
+                (bird.top > self.top_hol or -bird.height + bird.top < self.bot_hol):
+            bird.score -= 0.1
 
     def make_hole(self):
         self.bot_hol = randint(20 + 100, w_height - 200)
